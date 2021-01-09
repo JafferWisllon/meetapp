@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -13,9 +13,17 @@ export class UsersService {
   ) {}
 
   async create({name, email, password}: CreateUserDto): Promise<User> {
+    let user = await this.usersRepository.findOne({
+      where: { email }
+    });
+
+    if (user) {
+      throw new BadRequestException('Email já cadastrado');
+    }
+    
     const passwordHashed = await hash(password, 8);
 
-    const user = this.usersRepository.create({
+    user = this.usersRepository.create({
       name,
       email,
       password: passwordHashed
