@@ -3,7 +3,7 @@
 #### Cadastro usuários
 
 - [x] Deve ser possivel se cadastrar sua aplicação utilizando nome, e-mail e senha.
-- [ ] Realize a validação dos dados de entrada.
+- [x] Realize a validação dos dados de entrada.
 - [ ] Criptografe a senha do usuário para segurança.
 
 #### Atualização do usuário
