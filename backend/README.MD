@@ -4,7 +4,8 @@
 
 - [x] Deve ser possivel se cadastrar sua aplicação utilizando nome, e-mail e senha.
 - [x] Realize a validação dos dados de entrada.
-- [ ] Criptografe a senha do usuário para segurança.
+- [x] Criptografe a senha do usuário para segurança.
+- [ ] Não deve ser permitido dois usuários com mesmo email.
 
 #### Atualização do usuário
 
