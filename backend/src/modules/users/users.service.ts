@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './entities/User.entity';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -30,6 +30,24 @@ export class UsersService {
     });
 
     await this.usersRepository.save(user);
+
+    return user;
+  }
+
+  async validate(email: string, password: string): Promise<any> {
+    const user = await this.usersRepository.findOne({
+      where: { email }
+    })
+
+    if(!user) {
+      throw new BadRequestException('Invalid Credentials');
+    }
+
+    const passwordMatch = await compare(password, user.password);
+
+    if(!passwordMatch) {
+      throw new BadRequestException('Invalid Credentials');
+    }
 
     return user;
   }

@@ -7,6 +7,12 @@
 - [x] Criptografe a senha do usuário para segurança.
 - [x] Não deve ser permitido dois usuários com mesmo email.
 
+#### Autenticação
+
+- [x] O usuário deve poder autenticar na aplicação utilizando e-mail e senha.;.
+- [x] A autenticação deve ser feita utilizando JWT;
+- [x] Realize a validação dos dados de entrada
+
 #### Atualização do usuário
 
 - [ ] O usuário deve poder atualizar seu nome, email e senha;
@@ -18,9 +24,3 @@
 - [ ] O usuário deve poder recuperar sua senha informando o seu e-mail;.
 - [ ] O usuário deve receber um e-mail com instruções de recuperação de senha;
 - [ ] O usuário deve poder resetar sua senha;
-
-#### Autenticação
-
-- [ ] O usuário deve poder autenticar na aplicação utilizando e-mail e senha.;.
-- [ ] A autenticação deve ser feita utilizando JWT;
-- [ ] Realize a validação dos dados de entrada
