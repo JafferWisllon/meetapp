@@ -15,9 +15,11 @@
 
 #### Atualização do usuário
 
-- [ ] O usuário deve poder atualizar seu nome, email e senha;
+- [x] O usuário deve poder atualizar seu nome, email e senha;
+- [x] Realize a validação dos dados de entrada.
 - [ ] O usuário deve enviar um campo de confirmação de senha, ao atualizar a senha.
-- [ ] Realize a validação dos dados de entrada.
+- [ ] Salvar a nova senha criptografada
+- [ ] Caso usuário tente alterar o email, verique se o email não está sendo usado
 
 #### Recuperação de senha
 

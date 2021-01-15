@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/User.entity';
 import { hash, compare } from 'bcrypt';
 
@@ -50,5 +51,23 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async update(id: string, request: UpdateUserDto): Promise<any>{
+    const user = await this.usersRepository.findOne(id)
+
+    if(!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    try {
+      await this.usersRepository.update(id, request)
+
+      return {
+        message: 'Usuário atualizado com sucesso!'
+      }
+    } catch(err) {
+      throw new Error('Não foi possivel atualizar o usuário')
+    }
   }
 }
