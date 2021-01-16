@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Container } from './style';
+import { Container } from './style';
 
 import Logo from '../../assets/images/logo.png';
+
+import Button from '../components/Button';
 
 const SignIn: React.FC = () => {
   return (
