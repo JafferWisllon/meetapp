@@ -15,19 +15,6 @@ export const Container = styled.div`
     max-width: 315px;
     display: flex;
     flex-direction: column;
-
-    input {
-      height: 50px;
-      background: #261d2d;
-      border: 0;
-      font-size: 18px;
-      padding: 0 15px;
-      color: #cccccc;
-
-      & + input {
-        margin-top: 15px;
-      }
-    }
   }
 
   a {

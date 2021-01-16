@@ -5,6 +5,7 @@ import { Container } from './style';
 import Logo from '../../assets/images/logo.png';
 
 import Button from '../components/Button';
+import Input from '../components/Input';
 
 const SignIn: React.FC = () => {
   return (
@@ -12,8 +13,12 @@ const SignIn: React.FC = () => {
       <img src={Logo} alt="Meetapp" />
 
       <form>
-        <input type="email" placeholder="Digite seu email" />
-        <input type="password" placeholder="Sua senha secreta" />
+        <Input name="email" type="email" placeholder="Digite seu email" />
+        <Input
+          name="password"
+          type="password"
+          placeholder="Sua senha secreta"
+        />
         <Button type="submit">Entrar</Button>
       </form>
       <Link to="/register">Criar conta grátis!</Link>
