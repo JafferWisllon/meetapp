@@ -1,4 +1,6 @@
+import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './routes';
 
@@ -9,6 +11,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Routes />
       <GlobalStyle />
+      <ToastContainer />
     </BrowserRouter>
   );
 };

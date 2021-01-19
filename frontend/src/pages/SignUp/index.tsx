@@ -1,17 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiAlertCircle } from 'react-icons/fi';
+
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { Container } from './style';
-
 import Logo from '../../assets/images/logo.png';
 
 import Button from '../components/Button';
 import Input from '../components/Input';
 
+import { signUp } from '../../services/users';
+
 const SignUp: React.FC = () => {
+  const history = useHistory();
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -27,8 +32,17 @@ const SignUp: React.FC = () => {
         .min(6, 'Mínimo 6 caracteres')
         .required('Mínimo 6 caracteres'),
     }),
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async values => {
+      try {
+        await signUp(values);
+        toast.success('Usuário cadastrado com sucesso');
+        history.push('/');
+      } catch (error) {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+        console.log(error);
+      }
     },
   });
 
