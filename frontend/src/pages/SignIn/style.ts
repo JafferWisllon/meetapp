@@ -11,6 +11,22 @@ export const Container = styled.div`
     margin-bottom: 42px;
   }
 
+  div {
+    /*error message*/
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #c53030;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      margin-right: 10px;
+    }
+  }
+
   form {
     max-width: 315px;
     display: flex;
