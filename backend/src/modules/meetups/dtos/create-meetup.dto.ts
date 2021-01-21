@@ -25,9 +25,4 @@ export class CreateMeetupDto {
     message: 'Banner é obrigatório!'
   })
   banner: string;
-  
-  @IsString({
-    message: 'Usuário é obrigatório!'
-  })
-  user_id: string;
 }
