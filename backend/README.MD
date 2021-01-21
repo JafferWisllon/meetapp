@@ -40,9 +40,9 @@
 
 - [x] Todos campos são obrigatórios.
 
-- [ ] Adicione também um campo user_id que armazena o ID do usuário que organiza o evento.
+- [x] Adicione também um campo user_id que armazena o ID do usuário que organiza o evento.
 
-- [ ] Não deve ser possível cadastrar meetups com datas que já passaram.
+- [x] Não deve ser possível cadastrar meetups com datas que já passaram.
 
 - [ ] O usuário também deve poder editar todos dados de meetups que ainda não aconteceram e que ele é organizador.
 
