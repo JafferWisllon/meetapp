@@ -38,7 +38,7 @@
 
 - [ ] O usuário pode cadastrar meetups na plataforma com título do meetup, descrição, localização, data e hora e imagem (banner).
 
-- [ ] Todos campos são obrigatórios.
+- [x] Todos campos são obrigatórios.
 
 - [ ] Adicione também um campo user_id que armazena o ID do usuário que organiza o evento.
 
