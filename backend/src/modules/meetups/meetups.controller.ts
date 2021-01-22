@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateMeetupDto } from './dtos/create-meetup.dto';
 import { Meetup } from './entities/Meetup.entity';
@@ -24,5 +24,14 @@ export class MeetupsController {
     @GetUser() user: User,
     @Body() createMeetupDto: CreateMeetupDto): Promise<Meetup> {
     return this.meetupService.create(user, createMeetupDto)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete("/:id")
+  delete(
+    @GetUser() user: User,
+    @Param("id") meetupId: string
+    ): Promise<void> {
+    return this.meetupService.delete(user, meetupId)
   }
 }

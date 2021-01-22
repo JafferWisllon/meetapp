@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMeetupDto } from './dtos/create-meetup.dto';
@@ -42,5 +42,28 @@ export class MeetupsService {
 
     await this.meetupRepository.save(meetup);
     return meetup
+  }
+
+  async delete(user: any, meetupId: string): Promise<void> {
+    const { userId } = user;
+   
+    const meetup = await this.meetupRepository.findOne({
+      where: {
+        id: meetupId,
+        user_id: userId
+      }
+    })
+
+    if(!meetup) {
+      throw new NotFoundException('Meetup não encontrado')
+    }
+
+    const dateHasPassed = isBefore(meetup.date, new Date());
+    
+    if (dateHasPassed) {
+      throw new BadRequestException('Não é possivel deletar esse meetup, essa data ja passou!')
+    }
+
+    this.meetupRepository.remove(meetup);
   }
 }
