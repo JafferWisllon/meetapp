@@ -1,11 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../users/entities/User.entity';
 import { CreateMeetupDto } from './dtos/create-meetup.dto';
 import { Meetup } from './entities/Meetup.entity';
 
-import { isBefore, parseISO } from 'date-fns'
+import { isBefore } from 'date-fns'
 
 @Injectable()
 export class MeetupsService {
@@ -13,6 +12,16 @@ export class MeetupsService {
     @InjectRepository(Meetup)
     private meetupRepository: Repository<Meetup>
   ){}
+  async find(user: any): Promise<Meetup[]> {
+    const { userId } = user;
+   
+    return await this.meetupRepository.find({
+      where: {
+        user_id: userId
+      }
+    })
+  }
+
   async create(user: any, {title, description, date, banner, locale}: CreateMeetupDto): Promise<Meetup> {
     const { userId } = user;
 

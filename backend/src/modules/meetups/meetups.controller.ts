@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateMeetupDto } from './dtos/create-meetup.dto';
 import { Meetup } from './entities/Meetup.entity';
@@ -9,6 +9,14 @@ import { User } from '../users/entities/User.entity';
 @Controller('meetups')
 export class MeetupsController {
   constructor(private meetupService: MeetupsService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  findAll(
+    @GetUser() user: User
+  ): Promise<Meetup[]> {
+    return this.meetupService.find(user);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()
