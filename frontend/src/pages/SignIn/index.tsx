@@ -32,9 +32,13 @@ const SignIn: React.FC = () => {
     }),
     onSubmit: async values => {
       try {
-        await signIn(values);
+        const response = await signIn(values);
+        const { token } = response.data;
         toast.success('Login efetuado com sucesso!');
-        history.push('/');
+
+        localStorage.setItem('@meetapp-token', token);
+
+        history.push('/dashboard');
       } catch (error) {
         if (error.response.data) {
           toast.error(error.response.data.message);
