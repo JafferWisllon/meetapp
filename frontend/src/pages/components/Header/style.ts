@@ -4,8 +4,15 @@ export const Container = styled.div`
   background: #19171f;
   height: 92px;
   display: flex;
+`;
+
+export const Content = styled.div`
+  width: 940px;
+  margin: 0 auto;
+
+  display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 
   div {
     display: flex;
