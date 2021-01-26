@@ -12,10 +12,12 @@ import Logo from '../../assets/images/logo.png';
 import Button from '../components/Button';
 import Input from '../components/Input';
 
-import { signIn } from '../../services/users';
+import { useAuth } from '../../hooks/AuthContext';
+// import { signIn } from '../../services/users';
 
 const SignIn: React.FC = () => {
   const history = useHistory();
+  const { signInRequest, loading } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -32,11 +34,8 @@ const SignIn: React.FC = () => {
     }),
     onSubmit: async values => {
       try {
-        const response = await signIn(values);
-        const { token } = response.data;
+        await signInRequest(values);
         toast.success('Login efetuado com sucesso!');
-
-        localStorage.setItem('@meetapp-token', token);
 
         history.push('/dashboard');
       } catch (error) {
@@ -79,7 +78,9 @@ const SignIn: React.FC = () => {
             {formik.errors.password}
           </div>
         ) : null}
-        <Button type="submit">Entrar</Button>
+        <Button type="submit" loading={loading}>
+          Entrar
+        </Button>
       </form>
       <Link to="/register">Criar conta grátis!</Link>
     </Container>

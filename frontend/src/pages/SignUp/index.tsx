@@ -90,7 +90,9 @@ const SignUp: React.FC = () => {
             {formik.errors.password}
           </div>
         ) : null}
-        <Button type="submit">Criar conta</Button>
+        <Button type="submit" loading={false}>
+          Criar conta
+        </Button>
       </form>
       <Link to="/">Ja tenho login!</Link>
     </Container>

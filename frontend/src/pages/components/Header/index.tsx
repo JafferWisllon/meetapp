@@ -2,14 +2,16 @@ import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Container, Content } from './style';
 import Logo from '../../../assets/images/logo.png';
+import { useAuth } from '../../../hooks/AuthContext';
 
 const Header: React.FC = () => {
   const history = useHistory();
+  const { signOutRequest } = useAuth();
 
   const logout = useCallback(() => {
-    localStorage.removeItem('@meetapp-token');
+    signOutRequest();
     history.push('/');
-  }, [history]);
+  }, [history, signOutRequest]);
 
   return (
     <Container>
