@@ -7,3 +7,7 @@ export const listAll = (): Promise<any> => {
 export const getOne = (meetupId: string): Promise<any> => {
   return api.get(`/meetups/${meetupId}`);
 };
+
+export const deleteMeetup = (meetupId: string): Promise<any> => {
+  return api.delete(`/meetups/${meetupId}`);
+};

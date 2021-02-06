@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Header from '../../components/Header';
-import { getOne } from '../../../services/meetups';
+import { getOne, deleteMeetup } from '../../../services/meetups';
 
 import { Container, Title, Button, Image } from './style';
 import { formatDate } from '../../../utils/formatDate';
@@ -27,6 +29,7 @@ interface Meetup {
 }
 
 const Read: React.FC<Props> = ({ match }) => {
+  const history = useHistory();
   const meetupId = match.params.id;
   const [meetup, setMeetup] = useState<Meetup>({} as Meetup);
   const [loading, setLoading] = useState(false);
@@ -46,7 +49,21 @@ const Read: React.FC<Props> = ({ match }) => {
     loadMeetup();
   }, [meetupId]);
 
-  const { title, banner, description, locale, formatedDate } = meetup;
+  const handleCancel = useCallback(
+    async id => {
+      try {
+        await deleteMeetup(id);
+        toast.success('Meetup cancelado com sucesso');
+        history.push('/');
+      } catch (error) {
+        console.log(error);
+        toast.error('Não foi possivel cancelar esse meetup');
+      }
+    },
+    [history],
+  );
+
+  const { title, banner, description, locale, formatedDate, id } = meetup;
 
   return (
     <>
@@ -62,7 +79,9 @@ const Read: React.FC<Props> = ({ match }) => {
                 <Button type="button" color="#4DBAF9">
                   Editar
                 </Button>
-                <Button type="button">Cancelar</Button>
+                <Button type="button" onClick={() => handleCancel(id)}>
+                  Cancelar
+                </Button>
               </div>
             </Title>
             <Image
