@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { FiChevronRight } from 'react-icons/fi';
 
 import Header from '../components/Header';
-import { Content, Title, List } from './style';
+import { Content, Title } from './style';
+
+import { listAll } from '../../services/meetups';
+import DashboardList from '../components/DashboardList';
 
 const Dashboard: React.FC = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function loadAll() {
+      const response = await listAll();
+      setData(response.data);
+    }
+
+    loadAll();
+  }, []);
+
   return (
     <>
       <Header />
@@ -17,45 +30,7 @@ const Dashboard: React.FC = () => {
             Novo meetup
           </a>
         </Title>
-
-        <List>
-          <li>
-            <a href="/1">
-              Meetup de React Native
-              <div>
-                <strong>17 de junho, ás 13h</strong>
-                <FiChevronRight />
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="/1">
-              NodeJs Meetup
-              <div>
-                <strong>17 de junho, ás 13h</strong>
-                <FiChevronRight />
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="/1">
-              Rocketseat meetup
-              <div>
-                <strong>30 de agosto, ás 20h</strong>
-                <FiChevronRight />
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="/1">
-              React on the House
-              <div>
-                <strong>17 de novembro, ás 20h</strong>
-                <FiChevronRight />
-              </div>
-            </a>
-          </li>
-        </List>
+        <DashboardList items={data} />
       </Content>
     </>
   );
