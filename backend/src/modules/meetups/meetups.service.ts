@@ -52,7 +52,9 @@ export class MeetupsService {
       title, 
       description, 
       date, 
-      banner, 
+      banner: {
+        id: banner
+      }, 
       locale, 
       user_id: userId
     })

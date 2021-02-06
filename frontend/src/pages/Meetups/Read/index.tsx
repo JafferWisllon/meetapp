@@ -14,7 +14,9 @@ interface Props {
 }
 
 interface Meetup {
-  banner: string;
+  banner: {
+    filename: string;
+  };
   date: string;
   description: string;
   id: string;
@@ -27,56 +29,65 @@ interface Meetup {
 const Read: React.FC<Props> = ({ match }) => {
   const meetupId = match.params.id;
   const [meetup, setMeetup] = useState<Meetup>({} as Meetup);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadMeetup() {
+      setLoading(true);
       const response = await getOne(meetupId);
       const data = {
         ...response.data,
         formatedDate: formatDate(response.data.date),
       };
       setMeetup(data);
+      setLoading(false);
     }
 
     loadMeetup();
   }, [meetupId]);
 
-  const { SERVER_URL } = process.env;
+  const { title, banner, description, locale, formatedDate } = meetup;
 
   return (
     <>
       <Header />
       <Container>
-        <Title>
-          <h1>{meetup.title}</h1>
-          <div>
-            <Button type="button" color="#4DBAF9">
-              Editar
-            </Button>
-            <Button type="button">Cancelar</Button>
-          </div>
-        </Title>
-        <Image
-          src={`http://localhost:3333/files/${meetup.banner}`}
-          alt={meetup.title}
-        />
-        <p>{meetup.description}</p>
+        {loading ? (
+          <h2>Loading...</h2>
+        ) : (
+          <>
+            <Title>
+              <h1>{title}</h1>
+              <div>
+                <Button type="button" color="#4DBAF9">
+                  Editar
+                </Button>
+                <Button type="button">Cancelar</Button>
+              </div>
+            </Title>
+            <Image
+              src={`http://localhost:3333/files/${banner?.filename}`}
+              alt={title}
+            />
+            <p>{description}</p>
 
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <strong
-            style={{
-              marginRight: '30px',
-            }}
-          >
-            {meetup.locale}
-          </strong>
-          <strong>{meetup.formatedDate}</strong>
-        </div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <strong
+                style={{
+                  marginRight: '30px',
+                }}
+              >
+                {locale}
+              </strong>
+              <strong>{formatedDate}</strong>
+            </div>
+          </>
+        )}
       </Container>
     </>
   );
