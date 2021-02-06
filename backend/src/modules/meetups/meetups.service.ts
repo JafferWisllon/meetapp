@@ -22,6 +22,23 @@ export class MeetupsService {
     })
   }
 
+  async getOne(user: any, id: string): Promise<Meetup | void> {
+    const { userId } = user;
+
+    const meetup = await this.meetupRepository.findOne({
+      where: {
+        user_id: userId,
+        id
+      }
+    })
+
+    if(!meetup) {
+      throw new NotFoundException(`Meetup não encontrado`);
+    }
+    
+    return meetup;
+  }
+
   async create(user: any, {title, description, date, banner, locale}: CreateMeetupDto): Promise<Meetup> {
     const { userId } = user;
 

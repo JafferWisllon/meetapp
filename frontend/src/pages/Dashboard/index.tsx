@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-
 import Header from '../components/Header';
 import { Content, Title } from './style';
 
@@ -25,10 +25,10 @@ const Dashboard: React.FC = () => {
       <Content>
         <Title>
           <h1>Meus meetups</h1>
-          <a href="/meetups">
+          <Link to="/meetups/new">
             <AiOutlinePlusCircle />
             Novo meetup
-          </a>
+          </Link>
         </Title>
         <DashboardList items={data} />
       </Content>

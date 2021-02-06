@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { List } from './style';
 
 import { formatDate } from '../../../utils/formatDate';
@@ -23,13 +24,13 @@ const DashboardList: React.FC<Props> = ({ items }) => {
     <List>
       {items.map(item => (
         <li key={item.id}>
-          <a href={item.id}>
+          <Link to={`/meetups/${item.id}`}>
             {item.title}
             <div>
               <strong>{formatDate(item.date)}</strong>
               <FiChevronRight />
             </div>
-          </a>
+          </Link>
         </li>
       ))}
     </List>

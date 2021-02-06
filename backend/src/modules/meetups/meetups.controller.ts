@@ -17,6 +17,15 @@ export class MeetupsController {
   ): Promise<Meetup[]> {
     return this.meetupService.find(user);
   }
+  
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  getOne(
+    @GetUser() user: User,
+    @Param('id') id: string,
+  ): Promise<Meetup | void> {
+    return this.meetupService.getOne(user, id);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { Container, Content } from './style';
 import Logo from '../../../assets/images/logo.png';
 import { useAuth } from '../../../hooks/AuthContext';
@@ -16,13 +16,15 @@ const Header: React.FC = () => {
   return (
     <Container>
       <Content>
-        <img src={Logo} alt="Meetapp" />
+        <Link to="/">
+          <img src={Logo} alt="Meetapp" />
+        </Link>
 
         <div>
-          <a href="/profile">
+          <Link to="/profile">
             <strong>Diego fernandes</strong>
             <span>Meu perfil</span>
-          </a>
+          </Link>
 
           <button type="button" onClick={logout}>
             Sair

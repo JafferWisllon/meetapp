@@ -24,7 +24,6 @@ export class FilesController {
     return this.fileService.upload(file);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':filename')
   getImage(@Param('filename') image, @Res() res) {
     return res.sendFile(image, { root: './tmp/uploads' });
