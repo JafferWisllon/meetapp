@@ -3,20 +3,21 @@ import './interceptors/request';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import Routes from './routes';
-import { AuthProvider } from './hooks/AuthContext';
 
 import GlobalStyle from './styles/global';
+import store from './store';
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <BrowserRouter>
         <Routes />
         <GlobalStyle />
         <ToastContainer />
       </BrowserRouter>
-    </AuthProvider>
+    </Provider>
   );
 };
 

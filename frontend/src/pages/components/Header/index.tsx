@@ -2,16 +2,13 @@ import React, { useCallback } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, Content } from './style';
 import Logo from '../../../assets/images/logo.png';
-import { useAuth } from '../../../hooks/AuthContext';
 
 const Header: React.FC = () => {
   const history = useHistory();
-  const { signOutRequest } = useAuth();
 
   const logout = useCallback(() => {
-    signOutRequest();
     history.push('/');
-  }, [history, signOutRequest]);
+  }, [history]);
 
   return (
     <Container>
