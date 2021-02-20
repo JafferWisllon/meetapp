@@ -17,9 +17,9 @@
 
 - [x] O usuário deve poder atualizar seu nome, email e senha;
 - [x] Realize a validação dos dados de entrada.
-- [ ] O usuário deve enviar um campo de confirmação de senha, ao atualizar a senha.
-- [ ] Salvar a nova senha criptografada
-- [ ] Caso usuário tente alterar o email, verique se o email não está sendo usado
+- [X] O usuário deve enviar um campo de confirmação de senha, ao atualizar a senha.
+- [X] Salvar a nova senha criptografada
+- [X] Caso usuário tente alterar o email, verique se o email não está sendo usado
 
 #### Recuperação de senha
 
