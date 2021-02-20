@@ -1,10 +1,15 @@
 import React from 'react';
 import { RouteProps, Route, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { IAuthState } from '../store';
+import { decode } from 'jsonwebtoken';
 
 interface Props extends RouteProps {
   isPrivate?: boolean;
+}
+
+interface tokenDecoded {
+  iat: number;
+  exp: number;
+  sub: string;
 }
 
 const RouteWrapper: React.FC<Props> = ({
@@ -12,13 +17,19 @@ const RouteWrapper: React.FC<Props> = ({
   isPrivate = false,
   ...rest
 }) => {
-  const token = useSelector<IAuthState>(state => state.auth.token);
+  let signed;
+  const token = localStorage.getItem('@meetapp-token');
 
-  if (!token && isPrivate) {
+  if (token) {
+    const { exp } = decode(token) as tokenDecoded;
+    signed = exp > (new Date().getTime() + 1) / 1000;
+  }
+
+  if (!signed && isPrivate) {
     return <Redirect to="/" />;
   }
 
-  if (token && !isPrivate) {
+  if (signed && !isPrivate) {
     return <Redirect to="/dashboard" />;
   }
 

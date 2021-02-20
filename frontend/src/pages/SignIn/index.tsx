@@ -14,12 +14,12 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 
 import { RequestLogin } from '../../store/modules/auth/actions';
-import { IAuthState } from '../../store';
+import { State } from '../../store';
 
 const SignIn: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const loading = useSelector<IAuthState, boolean>(state => state.auth.loading);
+  const loading = useSelector<State, boolean>(state => state.auth.loading);
 
   const formik = useFormik({
     initialValues: {

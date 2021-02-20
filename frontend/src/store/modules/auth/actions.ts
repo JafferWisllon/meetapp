@@ -12,6 +12,7 @@ interface Request {
 
 interface Success {
   token: string;
+  user: any;
 }
 
 interface LoginAction {

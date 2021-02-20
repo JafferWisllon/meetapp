@@ -76,7 +76,11 @@ const Read: React.FC<Props> = ({ match }) => {
             <Title>
               <h1>{title}</h1>
               <div>
-                <Button type="button" color="#4DBAF9">
+                <Button
+                  type="button"
+                  color="#4DBAF9"
+                  onClick={() => history.push(`/meetups/edit/${id}`)}
+                >
                   Editar
                 </Button>
                 <Button type="button" onClick={() => handleCancel(id)}>

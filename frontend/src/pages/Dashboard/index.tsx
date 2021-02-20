@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
 import Header from '../components/Header';
 import { Content, Title } from './style';
 
-import { listAll } from '../../services/meetups';
 import DashboardList from '../components/DashboardList';
+import { getMeetupsRequest } from '../../store/modules/dashboard/action';
 
 const Dashboard: React.FC = () => {
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function loadAll() {
-      const response = await listAll();
-      setData(response.data);
-    }
-
-    loadAll();
-  }, []);
+    dispatch(getMeetupsRequest());
+  }, [dispatch]);
 
   return (
     <>
@@ -30,7 +26,7 @@ const Dashboard: React.FC = () => {
             Novo meetup
           </Link>
         </Title>
-        <DashboardList items={data} />
+        <DashboardList />
       </Content>
     </>
   );

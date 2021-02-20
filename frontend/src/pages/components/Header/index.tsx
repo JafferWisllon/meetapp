@@ -1,11 +1,17 @@
 import React, { useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, Content } from './style';
 import Logo from '../../../assets/images/logo.png';
+import { State } from '../../../store';
+
+interface User {
+  name: string;
+}
 
 const Header: React.FC = () => {
   const history = useHistory();
-
+  const user = useSelector<State, User | null>(state => state.auth.user);
   const logout = useCallback(() => {
     history.push('/');
   }, [history]);
@@ -19,7 +25,7 @@ const Header: React.FC = () => {
 
         <div>
           <Link to="/profile">
-            <strong>Diego fernandes</strong>
+            <strong>{user?.name}</strong>
             <span>Meu perfil</span>
           </Link>
 
