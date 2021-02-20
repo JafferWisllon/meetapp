@@ -3,6 +3,7 @@ import {
   loginSuccess,
   loginFailure,
   loginLoading,
+  signOut,
 } from './types';
 
 interface Request {
@@ -43,5 +44,11 @@ export function SuccessLogin(payload: Success): LoginAction {
 export function FailureLogin(): { type: string } {
   return {
     type: loginFailure,
+  };
+}
+
+export function LogoutOut(): { type: string } {
+  return {
+    type: signOut,
   };
 }

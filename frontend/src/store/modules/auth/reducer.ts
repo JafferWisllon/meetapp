@@ -1,5 +1,19 @@
 import { Reducer } from 'redux';
-import { loginSuccess, AuthState, loginLoading } from './types';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import {
+  loginSuccess,
+  AuthState,
+  loginLoading,
+  loginFailure,
+  signOut,
+} from './types';
+
+const config = {
+  storage,
+  key: '@meetup-auth',
+  whitelist: ['user', 'token'],
+};
 
 const INITIAL_STATE: AuthState = {
   loading: false,
@@ -16,15 +30,25 @@ const reducer: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
       };
     }
     case loginSuccess:
-      console.log(action.payload);
       return {
         ...state,
         token: action.payload.token,
         user: action.payload.user,
+      };
+    case signOut:
+      return {
+        ...state,
+        token: null,
+        user: null,
+      };
+    case loginFailure:
+      return {
+        ...state,
+        loading: !state.loading,
       };
     default:
       return state;
   }
 };
 
-export default reducer;
+export default persistReducer(config, reducer);

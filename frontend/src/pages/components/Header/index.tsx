@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, Content } from './style';
 import Logo from '../../../assets/images/logo.png';
 import { State } from '../../../store';
+import { LogoutOut } from '../../../store/modules/auth/actions';
 
 interface User {
   name: string;
@@ -11,10 +12,14 @@ interface User {
 
 const Header: React.FC = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const user = useSelector<State, User | null>(state => state.auth.user);
+
   const logout = useCallback(() => {
+    dispatch(LogoutOut());
     history.push('/');
-  }, [history]);
+  }, [dispatch, history]);
 
   return (
     <Container>
