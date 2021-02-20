@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { FiAlertCircle } from 'react-icons/fi';
 
@@ -12,10 +13,11 @@ import Logo from '../../assets/images/logo.png';
 import Button from '../components/Button';
 import Input from '../components/Input';
 
-import { signUp } from '../../services/users';
+import { RequestSignUp } from '../../store/modules/auth/actions';
 
 const SignUp: React.FC = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -33,16 +35,8 @@ const SignUp: React.FC = () => {
         .required('Mínimo 6 caracteres'),
     }),
     onSubmit: async values => {
-      try {
-        await signUp(values);
-        toast.success('Usuário cadastrado com sucesso');
-        history.push('/');
-      } catch (error) {
-        if (error.response.data) {
-          toast.error(error.response.data.message);
-        }
-        console.log(error);
-      }
+      dispatch(RequestSignUp(values));
+      history.push('/');
     },
   });
 

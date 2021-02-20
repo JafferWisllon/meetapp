@@ -4,6 +4,7 @@ import {
   loginFailure,
   loginLoading,
   signOut,
+  signUpRequest,
 } from './types';
 
 interface Request {
@@ -19,6 +20,17 @@ interface Success {
 interface LoginAction {
   type: string;
   payload: Request | Success;
+}
+
+interface SignUpRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface SignupAction {
+  type: string;
+  payload: SignUpRequest;
 }
 
 export function RequestLoading(): { type: string } {
@@ -37,6 +49,13 @@ export function RequestLogin(payload: Request): LoginAction {
 export function SuccessLogin(payload: Success): LoginAction {
   return {
     type: loginSuccess,
+    payload,
+  };
+}
+
+export function RequestSignUp(payload: SignUpRequest): SignupAction {
+  return {
+    type: signUpRequest,
     payload,
   };
 }
