@@ -12,13 +12,12 @@ import {
 const config = {
   storage,
   key: '@meetup-auth',
-  whitelist: ['user', 'token'],
+  whitelist: ['token'],
 };
 
 const INITIAL_STATE: AuthState = {
   loading: false,
   token: null,
-  user: null,
 };
 
 const reducer: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
@@ -32,14 +31,12 @@ const reducer: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
     case loginSuccess:
       return {
         ...state,
-        token: action.payload.token,
-        user: action.payload.user,
+        token: action.payload,
       };
     case signOut:
       return {
         ...state,
         token: null,
-        user: null,
       };
     case loginFailure:
       return {

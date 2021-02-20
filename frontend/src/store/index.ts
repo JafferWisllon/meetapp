@@ -7,10 +7,12 @@ import rootReducer from './modules/rootReducer';
 import rootSaga from './modules/rootSaga';
 import { AuthState } from './modules/auth/types';
 import { DashboardState } from './modules/dashboard/types';
+import { ProfileState } from './modules/profile/types';
 
 export interface State {
   auth: AuthState;
   dashboard: DashboardState;
+  profile: ProfileState;
 }
 
 const sagaMiddleware = createSagaMiddleware();

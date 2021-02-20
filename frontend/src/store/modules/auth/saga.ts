@@ -2,6 +2,7 @@ import { all, takeLatest, call, put } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { loginRequest, signOut, signUpRequest } from './types';
+import { SetProfile } from '../profile/actions';
 import api from '../../../services/api';
 
 import {
@@ -23,15 +24,18 @@ interface ResponseLogin {
 function* RequestLoginSaga({ payload }: RequestLoginAction) {
   try {
     yield put(RequestLoading());
-    const { data }: AxiosResponse<ResponseLogin> = yield call(
+    const {
+      data: { token, user },
+    }: AxiosResponse<ResponseLogin> = yield call(
       api.post,
       `/auth/login`,
       payload,
     );
 
-    yield put(SuccessLogin(data));
+    yield put(SuccessLogin(token));
+    yield put(SetProfile(user));
     toast.success('Login efetuado com sucesso');
-    localStorage.setItem('@meetapp-token', data.token);
+    localStorage.setItem('@meetapp-token', token);
     yield put(RequestLoading());
   } catch (error) {
     toast.error('Não foi possivel logar, tente novamente');

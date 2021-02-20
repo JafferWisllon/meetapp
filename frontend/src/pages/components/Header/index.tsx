@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const user = useSelector<State, User | null>(state => state.auth.user);
+  const user = useSelector<State, User | null>(state => state.profile.user);
 
   const logout = useCallback(() => {
     dispatch(LogoutOut());

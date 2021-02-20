@@ -12,14 +12,9 @@ interface Request {
   password: string;
 }
 
-interface Success {
-  token: string;
-  user: any;
-}
-
 interface LoginAction {
   type: string;
-  payload: Request | Success;
+  payload: Request | string;
 }
 
 interface SignUpRequest {
@@ -46,7 +41,7 @@ export function RequestLogin(payload: Request): LoginAction {
   };
 }
 
-export function SuccessLogin(payload: Success): LoginAction {
+export function SuccessLogin(payload: string): LoginAction {
   return {
     type: loginSuccess,
     payload,
