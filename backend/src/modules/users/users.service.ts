@@ -5,15 +5,17 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/User.entity';
 import { hash, compare } from 'bcrypt';
+import * as Yup from 'yup';
+import e from 'express';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>
-  ) {}
+  ) { }
 
-  async create({name, email, password}: CreateUserDto): Promise<User> {
+  async create({ name, email, password }: CreateUserDto): Promise<User> {
     let user = await this.usersRepository.findOne({
       where: { email }
     });
@@ -21,7 +23,7 @@ export class UsersService {
     if (user) {
       throw new BadRequestException('Email já cadastrado');
     }
-    
+
     const passwordHashed = await hash(password, 8);
 
     user = this.usersRepository.create({
@@ -40,34 +42,85 @@ export class UsersService {
       where: { email }
     })
 
-    if(!user) {
+    if (!user) {
       throw new BadRequestException('Invalid Credentials');
     }
 
     const passwordMatch = await compare(password, user.password);
 
-    if(!passwordMatch) {
+    if (!passwordMatch) {
       throw new BadRequestException('Invalid Credentials');
     }
 
     return user;
   }
 
-  async update(id: string, request: UpdateUserDto): Promise<any>{
+  async update(id: string, request: UpdateUserDto): Promise<any> {
+    const schema = Yup.object().shape({
+      name: Yup
+        .string(),
+      email: Yup
+        .string()
+        .email(),
+      oldPassword: Yup.string().min(6),
+      password: Yup.string()
+        .min(6)
+        .when('oldPassword', (oldPassword, field) =>
+          oldPassword ? field.required() : field
+        ),
+      passwordConfirmation: Yup.string()
+        .when('password', (password, field) =>
+          password ? field.required().oneOf([Yup.ref('password')]) : field
+        ),
+    });
+
+    const isValid = await schema.isValid(request, {
+      abortEarly: false
+    });
+
+    if (!isValid) {
+      throw new BadRequestException('Validation failed');
+    }
+
     const user = await this.usersRepository.findOne(id)
 
-    if(!user) {
+    if (!user) {
       throw new NotFoundException('User not found');
     }
 
+    if (user.email !== request.email) {
+      const alreadyExistsEmail = await this.usersRepository.findOne({
+        where: {
+          email: request.email
+        }
+      })
+
+      if (alreadyExistsEmail) {
+        throw new BadRequestException('Email already used by another');
+      }
+    }
+
+    if (request.password) {
+      request.password = await hash(request.password, 8)
+    }
+
+    if (request.oldPassword) {
+      delete request.oldPassword;
+    }
+
+    if (request.passwordConfirmation) {
+      delete request.passwordConfirmation;
+    }
+
     try {
+
       await this.usersRepository.update(id, request)
 
       return {
         message: 'Usuário atualizado com sucesso!'
       }
-    } catch(err) {
-      throw new Error('Não foi possivel atualizar o usuário')
+    } catch (err) {
+      throw new BadRequestException('Não foi possivel atualizar o usuário')
     }
   }
 }
