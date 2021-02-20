@@ -5,7 +5,7 @@ export const updateProfile = 'SET_PROFILE';
 export interface User {
   id: string;
   name: string;
-  password: string;
+  email: string;
 }
 
 export interface ProfileState {
