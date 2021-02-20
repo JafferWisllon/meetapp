@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { File } from '../../files/entities/File.entity';
 
 @Entity('meetups')
 export class Meetup {
@@ -17,8 +18,9 @@ export class Meetup {
   @Column()
   date: Date; 
 
-  @Column()
-  banner: string;
+  @ManyToOne(() => File, { eager: true })
+  @JoinColumn()
+  banner: File;
 
   @Column()
   user_id: string;

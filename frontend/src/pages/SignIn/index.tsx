@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { FiAlertCircle } from 'react-icons/fi';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -12,12 +13,13 @@ import Logo from '../../assets/images/logo.png';
 import Button from '../components/Button';
 import Input from '../components/Input';
 
-import { useAuth } from '../../hooks/AuthContext';
-// import { signIn } from '../../services/users';
+import { RequestLogin } from '../../store/modules/auth/actions';
+import { State } from '../../store';
 
 const SignIn: React.FC = () => {
   const history = useHistory();
-  const { signInRequest, loading } = useAuth();
+  const dispatch = useDispatch();
+  const loading = useSelector<State, boolean>(state => state.auth.loading);
 
   const formik = useFormik({
     initialValues: {
@@ -34,9 +36,7 @@ const SignIn: React.FC = () => {
     }),
     onSubmit: async values => {
       try {
-        await signInRequest(values);
-        toast.success('Login efetuado com sucesso!');
-
+        dispatch(RequestLogin(values));
         history.push('/dashboard');
       } catch (error) {
         if (error.response.data) {

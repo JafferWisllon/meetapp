@@ -7,6 +7,7 @@ import SignUp from '../pages/SignUp';
 import Dashboard from '../pages/Dashboard';
 import NewMeetup from '../pages/Meetups/new';
 import ReadMeetup from '../pages/Meetups/Read';
+import EditMeetup from '../pages/Meetups/edit';
 
 const Routes: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const Routes: React.FC = () => {
       <Route path="/dashboard" exact component={Dashboard} isPrivate />
       <Route path="/meetups/new" exact component={NewMeetup} isPrivate />
       <Route path="/meetups/:id" exact component={ReadMeetup} isPrivate />
+      <Route path="/meetups/edit/:id" exact component={EditMeetup} isPrivate />
     </Switch>
   );
 };

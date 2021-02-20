@@ -1,17 +1,25 @@
 import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { Container, Content } from './style';
 import Logo from '../../../assets/images/logo.png';
-import { useAuth } from '../../../hooks/AuthContext';
+import { State } from '../../../store';
+import { LogoutOut } from '../../../store/modules/auth/actions';
+
+interface User {
+  name: string;
+}
 
 const Header: React.FC = () => {
   const history = useHistory();
-  const { signOutRequest } = useAuth();
+  const dispatch = useDispatch();
+
+  const user = useSelector<State, User | null>(state => state.auth.user);
 
   const logout = useCallback(() => {
-    signOutRequest();
+    dispatch(LogoutOut());
     history.push('/');
-  }, [history, signOutRequest]);
+  }, [dispatch, history]);
 
   return (
     <Container>
@@ -22,7 +30,7 @@ const Header: React.FC = () => {
 
         <div>
           <Link to="/profile">
-            <strong>Diego fernandes</strong>
+            <strong>{user?.name}</strong>
             <span>Meu perfil</span>
           </Link>
 
