@@ -6,7 +6,6 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/User.entity';
 import { hash, compare } from 'bcrypt';
 import * as Yup from 'yup';
-import e from 'express';
 
 @Injectable()
 export class UsersService {
@@ -55,16 +54,15 @@ export class UsersService {
     return user;
   }
 
-  async update(id: string, request: UpdateUserDto): Promise<any> {
+  async update(id: string, request: UpdateUserDto): Promise<User> {
     const schema = Yup.object().shape({
       name: Yup
         .string(),
       email: Yup
         .string()
         .email(),
-      oldPassword: Yup.string().min(6),
+      oldPassword: Yup.string(),
       password: Yup.string()
-        .min(6)
         .when('oldPassword', (oldPassword, field) =>
           oldPassword ? field.required() : field
         ),
@@ -116,9 +114,8 @@ export class UsersService {
 
       await this.usersRepository.update(id, request)
 
-      return {
-        message: 'Usuário atualizado com sucesso!'
-      }
+      return await this.usersRepository.findOne(id);
+
     } catch (err) {
       throw new BadRequestException('Não foi possivel atualizar o usuário')
     }

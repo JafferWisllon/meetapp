@@ -1,30 +1,111 @@
-import React from 'react';
+/* eslint-disable no-param-reassign */
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
+import * as Yup from 'yup';
+import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../store';
 import { User } from '../../store/modules/profile/types';
 import Header from '../components/Header';
 import { Content } from './style';
+import ProfileError from '../components/ProfileError';
+import { UpdateProfile } from '../../store/modules/profile/actions';
+
+interface Request {
+  name?: string;
+  email?: string;
+  oldPassword?: string;
+  password?: string;
+  passwordConfirmation?: string;
+}
 
 const Profile: React.FC = () => {
+  const dispatch = useDispatch();
   const user = useSelector<State, User | null>(state => state.profile.user);
+  const [errors, setErrors] = useState([] as any);
+
+  const schema = Yup.object().shape({
+    name: Yup.string(),
+    email: Yup.string().email('Digite um e-mail válido'),
+    oldPassword: Yup.string(),
+    password: Yup.string().when('oldPassword', (oldPassword: any, field: any) =>
+      oldPassword
+        ? field
+            .required('Caso informe a senha antiga uma nova deve ser definida')
+            .min(6, 'e deve ter pelo menos 6 caracteres')
+        : field,
+    ),
+    passwordConfirmation: Yup.string().when(
+      'password',
+      (password: any, field: any) =>
+        password
+          ? field
+              .required('Confirmação de senha está diferente da nova senha')
+              .oneOf(
+                [Yup.ref('password')],
+                'Confirmação de senha está diferente da nova senha',
+              )
+          : field,
+    ),
+  });
+
+  const INITIAL_VALUES: Request = {
+    name: user?.name,
+    email: user?.email,
+    oldPassword: '',
+    password: '',
+    passwordConfirmation: '',
+  };
+
   const formik = useFormik({
-    initialValues: {
-      name: user?.name,
-      email: user?.email,
-      lastPassword: '',
-      newPassword: '',
-      passwordConfirmation: '',
-    },
+    initialValues: INITIAL_VALUES,
     onSubmit: async values => {
-      console.log(values);
+      schema
+        .validate(values, {
+          abortEarly: false,
+        })
+        .catch(err => {
+          const schemaErrors = [];
+          for (let i = 0; i < err.inner.length; i += 1) {
+            schemaErrors.push(err.inner[i].message);
+          }
+          setErrors(schemaErrors);
+        });
+
+      if (values.name === '') {
+        delete values.name;
+      }
+
+      if (values.email === '') {
+        delete values.email;
+      }
+
+      if (values.password === '') {
+        delete values.password;
+      }
+
+      if (values.oldPassword === '') {
+        delete values.oldPassword;
+      }
+
+      if (values.passwordConfirmation === '') {
+        delete values.passwordConfirmation;
+      }
+      const request = {
+        userId: user?.id,
+        request: values,
+      };
+
+      dispatch(UpdateProfile(request));
+      setErrors([]);
     },
   });
+
   return (
     <>
       <Header />
       <Content>
+        <ProfileError errors={errors} />
         <form onSubmit={formik.handleSubmit}>
           <input
             name="name"
@@ -42,18 +123,18 @@ const Profile: React.FC = () => {
           />
           <hr />
           <input
-            name="lastPassword"
+            name="oldPassword"
             type="password"
             placeholder="Senha atual"
             onChange={formik.handleChange}
-            value={formik.values.lastPassword}
+            value={formik.values.oldPassword}
           />
           <input
-            name="newPassword"
+            name="password"
             type="password"
             placeholder="Nova senha"
             onChange={formik.handleChange}
-            value={formik.values.newPassword}
+            value={formik.values.password}
           />
           <input
             name="passwordConfirmation"
